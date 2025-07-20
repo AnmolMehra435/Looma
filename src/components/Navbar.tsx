@@ -40,8 +40,8 @@ export const Navbar = () => {
           : "bg-transparent"
       }`}>
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          {/* Left Side - Menu and Logo */}
-          <div className="flex items-center gap-4 order-1">
+          {/* Left Side - Menu and Logo (Extreme Left) */}
+          <div className="flex items-center gap-2 justify-start">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="hover-glow">
@@ -61,10 +61,6 @@ export const Navbar = () => {
                   <Search className="mr-2 h-4 w-4" />
                   Explore Designs
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => navigate("/contact")}>
-                  <User className="mr-2 h-4 w-4" />
-                  Contact Us
-                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                   <Palette className="mr-2 h-4 w-4" />
@@ -76,9 +72,10 @@ export const Navbar = () => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            
             <button 
               onClick={() => navigate("/")}
-              className="text-2xl font-bold gradient-primary bg-clip-text text-transparent hover-lift order-2 md:order-1"
+              className="text-2xl font-bold gradient-primary bg-clip-text text-transparent hover-lift ml-2"
             >
               Looma
             </button>
@@ -98,8 +95,8 @@ export const Navbar = () => {
             ))}
           </div>
 
-          {/* Right Side */}
-          <div className="flex items-center gap-3 order-3">
+          {/* Right Side (Extreme Right) */}
+          <div className="flex items-center gap-3 justify-end">
             {!isLoggedIn ? (
               <>
                 <Button 
