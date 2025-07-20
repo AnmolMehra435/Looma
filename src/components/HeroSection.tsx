@@ -7,20 +7,12 @@ export const HeroSection = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Video Container */}
-      <div className="absolute inset-0 z-0">
-        <div className="relative w-full h-full">
-          {/* Placeholder for video - using thumbnail */}
-          <img 
-            src={heroThumbnail}
-            alt="Creative design process"
-            className="w-full h-full object-cover"
-          />
-          {/* Video overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-background/90 via-background/50 to-transparent"></div>
-        </div>
-      </div>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
+      {/* Dark Background with subtle pattern */}
+      <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/20 to-primary/5" />
+      
+      {/* Subtle pattern overlay */}
+      <div className="absolute inset-0 z-10 opacity-5 bg-[radial-gradient(circle_at_1px_1px,_white_1px,_transparent_0)] bg-[length:24px_24px]" />
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 text-center max-w-4xl">

@@ -40,15 +40,8 @@ export const Navbar = () => {
           : "bg-transparent"
       }`}>
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          {/* Left Side - Logo and Dropdown */}
-          <div className="flex items-center gap-4">
-            <button 
-              onClick={() => navigate("/")}
-              className="text-2xl font-bold gradient-primary bg-clip-text text-transparent hover-lift"
-            >
-              DesignCraft
-            </button>
-            
+          {/* Left Side - Menu and Logo */}
+          <div className="flex items-center gap-4 order-1">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon" className="hover-glow">
@@ -68,6 +61,10 @@ export const Navbar = () => {
                   <Search className="mr-2 h-4 w-4" />
                   Explore Designs
                 </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate("/contact")}>
+                  <User className="mr-2 h-4 w-4" />
+                  Contact Us
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                   <Palette className="mr-2 h-4 w-4" />
@@ -79,6 +76,12 @@ export const Navbar = () => {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
+            <button 
+              onClick={() => navigate("/")}
+              className="text-2xl font-bold gradient-primary bg-clip-text text-transparent hover-lift order-2 md:order-1"
+            >
+              Looma
+            </button>
           </div>
 
           {/* Center Navigation - Desktop */}
@@ -96,19 +99,19 @@ export const Navbar = () => {
           </div>
 
           {/* Right Side */}
-          <div className="flex items-center gap-3">
-            {!isLoggedIn && !isScrolled ? (
+          <div className="flex items-center gap-3 order-3">
+            {!isLoggedIn ? (
               <>
                 <Button 
                   variant="ghost" 
                   onClick={() => setIsLoggedIn(true)}
-                  className="hidden sm:flex"
+                  className="text-sm px-3 py-2"
                 >
                   Login
                 </Button>
                 <Button 
                   onClick={() => setIsLoggedIn(true)}
-                  className="gradient-primary text-primary-foreground hover-lift"
+                  className="gradient-primary text-primary-foreground hover-lift text-sm px-3 py-2"
                 >
                   Sign Up
                 </Button>
@@ -136,16 +139,6 @@ export const Navbar = () => {
                 </DropdownMenuContent>
               </DropdownMenu>
             )}
-
-            {/* Mobile Menu Toggle */}
-            <Button
-              variant="ghost"
-              size="icon"
-              className="md:hidden"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            >
-              {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </Button>
           </div>
         </div>
 
