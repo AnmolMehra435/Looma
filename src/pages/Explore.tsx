@@ -55,14 +55,12 @@ export default function Explore() {
         <div className="bg-secondary/20 py-12">
           <div className="container mx-auto px-4">
             <div className="text-center mb-8">
-              <h1 className="text-4xl md:text-5xl font-bold mb-4">
-                Explore
-                <span className="gradient-primary bg-clip-text text-transparent mx-3">
-                  Creative
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+                <span className="gradient-primary bg-clip-text text-transparent">
+                  Designs
                 </span>
-                Designs
               </h1>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
                 Discover thousands of unique designs from our creative community
               </p>
             </div>
@@ -111,17 +109,17 @@ export default function Explore() {
         </div>
 
         {/* Gallery Grid */}
-        <div className="container mx-auto px-4 py-8">
-          <div className="mb-6 flex items-center justify-between">
-            <p className="text-sm text-muted-foreground">
+        <div className="container mx-auto px-2 sm:px-4 py-8">
+          <div className="mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <p className="text-xs sm:text-sm text-muted-foreground px-2">
               Showing {filteredImages.length} designs in "{selectedCategory}"
             </p>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="self-start sm:self-auto">
               Sort by Popular
             </Button>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3 md:gap-4 px-2 sm:px-0">
             {filteredImages.map((image, index) => (
               <div
                 key={image.id}

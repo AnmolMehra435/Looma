@@ -64,9 +64,9 @@ export default function Studio() {
     <div className="min-h-screen bg-background">
       <Navbar />
       
-      <div className="pt-16 flex h-screen">
-        {/* Left Toolbar */}
-        <div className="w-20 bg-card border-r border-border shadow-creative flex flex-col items-center py-6 gap-4">
+      <div className="pt-16 flex flex-col md:flex-row h-screen">
+        {/* Left Toolbar - Hidden on mobile, shown at bottom */}
+        <div className="hidden md:flex w-20 bg-card border-r border-border shadow-creative flex-col items-center py-6 gap-4">
           {toolbarItems.map((tool) => (
             <div
               key={tool.id}
@@ -102,7 +102,7 @@ export default function Studio() {
         </div>
 
         {/* Main Canvas Area */}
-        <div className="flex-1 flex flex-col">
+        <div className="flex-1 flex flex-col pb-20 md:pb-16">
           {/* Canvas Header */}
           <div className="h-16 border-b border-border bg-card/50 backdrop-blur-sm flex items-center justify-between px-6">
             <div className="flex items-center gap-4">
@@ -163,8 +163,37 @@ export default function Studio() {
         </div>
       </div>
 
-      {/* Bottom Control Bar */}
-      <div className="fixed bottom-0 left-20 right-0 h-16 bg-card/95 backdrop-blur-sm border-t border-border shadow-creative">
+      {/* Mobile Toolbar - Bottom on mobile */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-card/95 backdrop-blur-sm border-t border-border shadow-creative">
+        <div className="flex items-center justify-center px-2 py-4 gap-2 overflow-x-auto">
+          {toolbarItems.map((tool) => (
+            <Button
+              key={tool.id}
+              variant={selectedTool === tool.id ? "default" : "ghost"}
+              size="sm"
+              className={`shrink-0 h-10 transition-smooth hover-lift ${
+                selectedTool === tool.id 
+                  ? "gradient-primary text-primary-foreground shadow-glow" 
+                  : "hover:bg-primary/10"
+              }`}
+              onClick={() => handleToolSelect(tool.id)}
+            >
+              {tool.type === "brand" ? (
+                <span className="text-sm font-bold">{tool.icon as string}</span>
+              ) : (
+                <>
+                  {tool.icon && typeof tool.icon !== 'string' && (
+                    <tool.icon className="h-4 w-4" />
+                  )}
+                </>
+              )}
+            </Button>
+          ))}
+        </div>
+      </div>
+
+      {/* Bottom Control Bar - Desktop */}
+      <div className="hidden md:block fixed bottom-0 left-20 right-0 h-16 bg-card/95 backdrop-blur-sm border-t border-border shadow-creative">
         <div className="flex items-center justify-center h-full gap-4">
           <Button
             variant="outline"

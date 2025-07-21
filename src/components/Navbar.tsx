@@ -39,13 +39,13 @@ export const Navbar = () => {
           ? "bg-background/80 backdrop-blur-lg border-b shadow-creative" 
           : "bg-transparent"
       }`}>
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
+        <div className="container mx-auto px-2 sm:px-4 h-16 flex items-center justify-between">
           {/* Left Side - Menu and Logo (Extreme Left) */}
-          <div className="flex items-center gap-2 justify-start">
+          <div className="flex items-center gap-1 sm:gap-2 justify-start">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="hover-glow">
-                  <Menu className="h-5 w-5" />
+                <Button variant="ghost" size="icon" className="hover-glow h-8 w-8 sm:h-10 sm:w-10">
+                  <Menu className="h-4 w-4 sm:h-5 sm:w-5" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-48 bg-card/95 backdrop-blur-sm">
@@ -75,14 +75,14 @@ export const Navbar = () => {
             
             <button 
               onClick={() => navigate("/")}
-              className="text-2xl font-bold gradient-primary bg-clip-text text-transparent hover-lift ml-2"
+              className="text-lg sm:text-2xl font-bold gradient-primary bg-clip-text text-transparent hover-lift ml-1 sm:ml-2"
             >
               Looma
             </button>
           </div>
 
           {/* Center Navigation - Desktop */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden lg:flex items-center gap-6">
             {navItems.map((item) => (
               <button
                 key={item.label}
@@ -96,19 +96,19 @@ export const Navbar = () => {
           </div>
 
           {/* Right Side (Extreme Right) */}
-          <div className="flex items-center gap-3 justify-end">
+          <div className="flex items-center gap-2 sm:gap-3 justify-end">
             {!isLoggedIn ? (
               <>
                 <Button 
                   variant="ghost" 
                   onClick={() => setIsLoggedIn(true)}
-                  className="text-sm px-3 py-2"
+                  className="text-xs sm:text-sm px-2 sm:px-3 py-2 h-8 sm:h-10"
                 >
                   Login
                 </Button>
                 <Button 
                   onClick={() => setIsLoggedIn(true)}
-                  className="gradient-primary text-primary-foreground hover-lift text-sm px-3 py-2"
+                  className="gradient-primary text-primary-foreground hover-lift text-xs sm:text-sm px-2 sm:px-3 py-2 h-8 sm:h-10"
                 >
                   Sign Up
                 </Button>
