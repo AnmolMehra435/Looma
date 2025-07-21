@@ -104,22 +104,21 @@ export default function Studio() {
         {/* Main Canvas Area */}
         <div className="flex-1 flex flex-col pb-20 md:pb-16">
           {/* Canvas Header */}
-          <div className="h-16 border-b border-border bg-card/50 backdrop-blur-sm flex items-center justify-between px-6">
-            <div className="flex items-center gap-4">
-              <h1 className="text-xl font-semibold">3D Design Studio</h1>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-sm text-muted-foreground">Auto-save enabled</span>
-              </div>
+          <div className="h-16 border-b border-border bg-card/50 backdrop-blur-sm flex items-center justify-between px-4 md:px-6">
+            <div className="flex items-center gap-2 md:gap-4">
+              <Button variant="default" size="sm" className="gradient-primary">
+                Save
+              </Button>
             </div>
             
-            <div className="flex items-center gap-2">
-              <Button variant="outline" size="sm">
+            <div className="flex items-center gap-1 md:gap-2">
+              <Button variant="outline" size="sm" className="hidden sm:flex">
                 <Palette className="h-4 w-4 mr-2" />
                 Color Palette
               </Button>
               <Button variant="outline" size="sm">
-                Export
+                <span className="hidden sm:inline">Export</span>
+                <span className="sm:hidden">Export</span>
               </Button>
             </div>
           </div>
