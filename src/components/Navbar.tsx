@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, User, ShoppingBag, Palette, Home, Layers3, Search, UserCircle, X } from "lucide-react";
+import { Menu, User, ShoppingBag, Palette, Home, Layers3, Search, UserCircle, X, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { 
   DropdownMenu,
@@ -15,6 +15,12 @@ export const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const [theme, setTheme] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('theme') || 'light';
+    }
+    return 'light';
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,6 +30,15 @@ export const Navbar = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
   const navItems = isLoggedIn || isScrolled ? [
     { label: "Home", icon: Home, path: "/" },
@@ -97,6 +112,16 @@ export const Navbar = () => {
 
           {/* Right Side (Extreme Right) */}
           <div className="flex items-center gap-2 sm:gap-3 justify-end">
+            {/* Theme Switcher Button */}
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Toggle theme"
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              className="hover-glow"
+            >
+              {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            </Button>
             {!isLoggedIn ? (
               <>
                 <Button 
