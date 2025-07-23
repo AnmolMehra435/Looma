@@ -5,7 +5,7 @@ import { ContactSection } from "@/components/ContactSection";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pt-16 overflow-x-hidden">
       <Navbar />
       <HeroSection />
       <DesignCategories />

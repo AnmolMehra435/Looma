@@ -123,7 +123,7 @@ All colors MUST be HSL. Focused on creativity, fashion, and modern aesthetics.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground overflow-x-hidden;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   }
 

@@ -111,7 +111,7 @@ export const Navbar = () => {
           </div>
 
           {/* Right Side (Extreme Right) */}
-          <div className="flex items-center gap-2 sm:gap-3 justify-end">
+          <div className="flex items-center gap-1 xs:gap-2 sm:gap-3 justify-end flex-wrap xs:flex-nowrap min-w-0">
             {/* Theme Switcher Button */}
             <Button
               variant="ghost"
@@ -127,13 +127,13 @@ export const Navbar = () => {
                 <Button 
                   variant="ghost" 
                   onClick={() => setIsLoggedIn(true)}
-                  className="text-xs sm:text-sm px-2 sm:px-3 py-2 h-8 sm:h-10"
+                  className="text-xs xs:text-sm px-1 xs:px-2 sm:px-3 py-2 h-8 sm:h-10 min-w-0"
                 >
                   Login
                 </Button>
                 <Button 
                   onClick={() => setIsLoggedIn(true)}
-                  className="gradient-primary text-primary-foreground hover-lift text-xs sm:text-sm px-2 sm:px-3 py-2 h-8 sm:h-10"
+                  className="gradient-primary text-primary-foreground hover-lift text-xs xs:text-sm px-1 xs:px-2 sm:px-3 py-2 h-8 sm:h-10 min-w-0"
                 >
                   Sign Up
                 </Button>

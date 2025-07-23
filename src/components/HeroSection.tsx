@@ -7,7 +7,7 @@ export const HeroSection = () => {
   const navigate = useNavigate();
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background">
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-background mt-4 sm:mt-0">
       {/* Dark Background with subtle pattern */}
       <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/20 to-primary/5" />
       
@@ -15,7 +15,7 @@ export const HeroSection = () => {
       <div className="absolute inset-0 z-10 opacity-5 bg-[radial-gradient(circle_at_1px_1px,_white_1px,_transparent_0)] bg-[length:24px_24px]" />
 
       {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 text-center max-w-4xl">
+      <div className="relative z-10 container mx-auto px-2 sm:px-4 text-center max-w-4xl">
         <div className="animate-slide-up">
           <div className="flex items-center justify-center gap-2 mb-6">
             <Sparkles className="h-6 w-6 text-primary animate-pulse" />
@@ -25,25 +25,25 @@ export const HeroSection = () => {
             <Sparkles className="h-6 w-6 text-primary animate-pulse" />
           </div>
 
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
+          <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
             Create
-            <span className="gradient-primary bg-clip-text text-transparent mx-3">
+            <span className="gradient-primary bg-clip-text text-transparent mx-2 sm:mx-3">
               Custom
             </span>
             <br />
             Clothing Designs
           </h1>
 
-          <p className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
             Transform your creativity into wearable art. Design, visualize, and order custom clothing 
             with our powerful 3D design platform.
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
+          <div className="flex flex-col xs:flex-row items-center justify-center gap-3 sm:gap-4 mb-12 w-full max-w-xs sm:max-w-none mx-auto">
             <Button 
               size="lg" 
               onClick={() => navigate("/studio")}
-              className="gradient-primary text-primary-foreground hover-lift text-lg px-8 py-6 h-auto"
+              className="gradient-primary text-primary-foreground hover-lift text-base sm:text-lg px-4 sm:px-8 py-4 sm:py-6 h-auto w-full xs:w-auto"
             >
               <Layers3 className="mr-2 h-5 w-5" />
               Start Designing
@@ -52,7 +52,7 @@ export const HeroSection = () => {
               variant="outline" 
               size="lg"
               onClick={() => navigate("/explore")}
-              className="border-primary/20 hover:bg-primary/10 text-lg px-8 py-6 h-auto"
+              className="border-primary/20 hover:bg-primary/10 text-base sm:text-lg px-4 sm:px-8 py-4 sm:py-6 h-auto w-full xs:w-auto"
             >
               <Palette className="mr-2 h-5 w-5" />
               Explore Gallery
