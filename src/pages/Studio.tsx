@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { 
   Type, 
   Image, 
@@ -15,11 +15,14 @@ import {
 import { Button } from "@/components/ui/button";
 import { Navbar } from "@/components/Navbar";
 import { useToast } from "@/hooks/use-toast";
+import TemplatesTool from "@/components/TemplatesTool";
+import ImagesTool from "@/components/ImagesTool";
+import IllustrationsTool from "@/components/IllustrationsTool";
+import DesignCanvas, { CanvasElement } from "@/components/DesignCanvas";
 
 const toolbarItems = [
-  { id: "logo", icon: "L", label: "Logo", type: "brand" as const },
-  { id: "template", icon: FileText, label: "Templates", type: "icon" as const },
   { id: "text", icon: Type, label: "Text Tool", type: "icon" as const },
+  { id: "template", icon: FileText, label: "Templates", type: "icon" as const },
   { id: "illustration", icon: Shapes, label: "Illustrations", type: "icon" as const },
   { id: "image", icon: Image, label: "Images", type: "icon" as const },
   { id: "ai", icon: Sparkles, label: "AI Assistant", type: "icon" as const },
@@ -28,9 +31,20 @@ const toolbarItems = [
 
 export default function Studio() {
   const [selectedTool, setSelectedTool] = useState<string | null>(null);
+  const [elements, setElements] = useState<CanvasElement[]>([]);
+  const [background, setBackground] = useState("#f3f4f6");
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [color, setColor] = useState("#000000");
   const [history, setHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const { toast } = useToast();
+  const controlsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (selectedId && elements.find(el => el.id === selectedId && el.type === "text")) {
+      controlsRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+  }, [selectedId]);
 
   const handleUndo = () => {
     if (historyIndex > 0) {
@@ -60,102 +74,201 @@ export default function Studio() {
     });
   };
 
+  // Tool handlers
+  const handleAddText = (text: string) => {
+    setElements([
+      ...elements,
+      { id: Date.now() + "", type: "text", text, x: 80, y: 80, fontSize: 32, fill: "#000000" }
+    ]);
+  };
+  const handleAddImage = (url: string) => {
+    setElements([...elements, { id: Date.now() + "", type: "image", url, x: 60, y: 60, width: 120, height: 120 }]);
+  };
+  const handleAddShape = (shape: string) => {
+    setElements([...elements, { id: Date.now() + "", type: "shape", shape, x: 100, y: 100, width: 60, height: 40, fill: color }]);
+  };
+
+  // Add font families
+  const fontFamilies = [
+    "Arial", "Roboto", "Georgia", "Comic Sans MS", "Impact", "Times New Roman", "Courier New"
+  ];
+
+  // Update selected text element
+  const updateSelectedText = (updates: Partial<{ fontSize: number; fill: string; fontFamily: string }>) => {
+    if (!selectedId) return;
+    setElements(elements => elements.map(el => {
+      if (el.id === selectedId && el.type === "text") {
+        return { ...el, ...updates };
+      }
+      return el;
+    }));
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
       
       <div className="pt-16 flex flex-col md:flex-row h-screen">
-        {/* Left Toolbar - Hidden on mobile, shown at bottom */}
+        {/* Left Toolbar */}
         <div className="hidden md:flex w-20 bg-card border-r border-border shadow-creative flex-col items-center py-6 gap-4">
           {toolbarItems.map((tool) => (
-            <div
-              key={tool.id}
-              className="relative group"
-            >
+            <div key={tool.id} className="relative group">
               <Button
                 variant={selectedTool === tool.id ? "default" : "ghost"}
                 size="icon"
-                className={`w-12 h-12 rounded-xl transition-smooth hover-lift ${
-                  selectedTool === tool.id 
-                    ? "gradient-primary text-primary-foreground shadow-glow" 
-                    : "hover:bg-primary/10"
-                }`}
-                onClick={() => handleToolSelect(tool.id)}
+                className={`w-12 h-12 rounded-xl transition-smooth hover-lift ${selectedTool === tool.id ? "gradient-primary text-primary-foreground shadow-glow" : "hover:bg-primary/10"}`}
+                onClick={() => setSelectedTool(tool.id)}
               >
-                {tool.type === "brand" ? (
-                  <span className="text-xl font-bold">{tool.icon as string}</span>
-                ) : (
-                  <>
-                    {tool.icon && typeof tool.icon !== 'string' && (
-                      <tool.icon className="h-6 w-6" />
-                    )}
-                  </>
+                {tool.icon && typeof tool.icon !== 'string' && (
+                  <tool.icon className="h-6 w-6" />
                 )}
               </Button>
-              
-              {/* Tooltip */}
               <div className="absolute left-full ml-2 top-1/2 -translate-y-1/2 bg-foreground text-background px-2 py-1 rounded text-sm opacity-0 group-hover:opacity-100 transition-smooth pointer-events-none whitespace-nowrap z-50">
                 {tool.label}
               </div>
             </div>
           ))}
         </div>
-
         {/* Main Canvas Area */}
-        <div className="flex-1 flex flex-col pb-20 md:pb-16">
-          {/* Canvas Header */}
-          <div className="h-16 border-b border-border bg-card/50 backdrop-blur-sm flex items-center justify-between px-4 md:px-6">
-            <div className="flex items-center gap-2 md:gap-4">
-              <Button variant="default" size="sm" className="gradient-primary">
-                Save
-              </Button>
-            </div>
-            
-            <div className="flex items-center gap-1 md:gap-2">
-              <Button variant="outline" size="sm" className="hidden sm:flex">
-                <Palette className="h-4 w-4 mr-2" />
-                Color Palette
-              </Button>
-              <Button variant="outline" size="sm">
-                <span className="hidden sm:inline">Export</span>
-                <span className="sm:hidden">Export</span>
-              </Button>
-            </div>
-          </div>
+        <div className="flex-1 flex flex-col pb-20 md:pb-16 items-center justify-center">
+          <DesignCanvas
+            elements={elements}
+            setElements={setElements}
+            background={background}
+            setBackground={setBackground}
+            selectedId={selectedId}
+            setSelectedId={setSelectedId}
+            onAddText={handleAddText}
+            onAddImage={handleAddImage}
+            onAddShape={handleAddShape}
+            color={color}
+            setColor={setColor}
+          />
+          {/* Tool controls below canvas */}
+          <div className="mt-4 w-full max-w-md">
+            {selectedTool === "text" && (
+              <div>
+                <label className="block mb-2 font-medium">Text</label>
+                <input
+                  className="border rounded px-2 py-1 mb-2 w-full text-black"
+                  type="text"
+                  placeholder="Enter your text"
+                  style={{ color: "#000" }}
+                  onKeyDown={e => {
+                    if (e.key === "Enter" && e.currentTarget.value) {
+                      handleAddText(e.currentTarget.value);
+                      e.currentTarget.value = "";
+                    }
+                  }}
+                />
+                <div className="text-xs text-muted-foreground">Press Enter to add to canvas</div>
+              </div>
+            )}
 
-          {/* Canvas */}
-          <div className="flex-1 relative bg-gradient-to-br from-muted/20 to-secondary/20 overflow-hidden">
-            {/* 3D T-Shirt Placeholder */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="relative">
-                {/* T-Shirt SVG Placeholder */}
-                <div className="w-80 h-96 bg-card rounded-2xl shadow-creative hover-glow transition-smooth p-8 flex items-center justify-center border">
-                  <div className="text-center">
-                    <div className="w-48 h-56 bg-primary/10 rounded-lg mb-4 flex items-center justify-center">
-                      <Shapes className="h-24 w-24 text-primary/50" />
-                    </div>
-                    <h3 className="text-lg font-semibold mb-2">3D T-Shirt Canvas</h3>
-                    <p className="text-sm text-muted-foreground">
-                      Select a tool from the left to start designing
-                    </p>
+            {/* Controls for selected text, always visible when a text element is selected */}
+            {selectedId && elements.find(el => el.id === selectedId && el.type === "text") && (
+              <div ref={controlsRef} className="mt-4 p-4 border-2 border-primary rounded-lg bg-card shadow-lg">
+                <div className="font-semibold mb-2 text-primary">Edit Selected Text</div>
+                <div className="mb-2">
+                  <label className="block text-xs mb-1">Font Size</label>
+                  <input
+                    type="range"
+                    min={12}
+                    max={96}
+                    value={(() => {
+                      const el = elements.find(el => el.id === selectedId && el.type === "text");
+                      return el && el.type === "text" ? el.fontSize : 32;
+                    })()}
+                    onChange={e => updateSelectedText({ fontSize: Number(e.target.value) })}
+                  />
+                  <span className="ml-2 text-xs">
+                    {(() => {
+                      const el = elements.find(el => el.id === selectedId && el.type === "text");
+                      return el && el.type === "text" ? el.fontSize : 32;
+                    })()}
+                  </span>
+                </div>
+                <div className="mb-2">
+                  <label className="block text-xs mb-1">Font Family</label>
+                  <select
+                    className="border rounded px-1 py-0.5"
+                    value={(() => {
+                      const el = elements.find(el => el.id === selectedId && el.type === "text");
+                      return el && el.type === "text" ? el.fontFamily || fontFamilies[0] : fontFamilies[0];
+                    })()}
+                    onChange={e => updateSelectedText({ fontFamily: e.target.value })}
+                  >
+                    {fontFamilies.map(f => (
+                      <option key={f} value={f}>{f}</option>
+                    ))}
+                  </select>
+                </div>
+                <div className="mb-2">
+                  <label className="block text-xs mb-1">Color</label>
+                  <div className="flex gap-1 flex-wrap">
+                    {["#000000", "#ffffff", "#fbbf24", "#60a5fa", "#34d399", "#f472b6", "#e11d48", "#6366f1", "#f59e42", "#10b981"].map(c => (
+                      <button
+                        key={c}
+                        className="w-5 h-5 rounded-full border-2 border-gray-300"
+                        style={{ background: c, outline: (() => {
+                          const el = elements.find(el => el.id === selectedId && el.type === "text");
+                          return el && el.type === "text" && el.fill === c ? "2px solid #333" : undefined;
+                        })() }}
+                        onClick={() => updateSelectedText({ fill: c })}
+                      />
+                    ))}
                   </div>
                 </div>
-
-                {/* Floating design elements */}
-                <div className="absolute -top-4 -right-4 w-8 h-8 bg-accent/30 rounded-full animate-float"></div>
-                <div className="absolute -bottom-4 -left-4 w-6 h-6 bg-primary/30 rounded-full animate-float" style={{ animationDelay: "1s" }}></div>
               </div>
-            </div>
-
-            {/* Design overlay when tool is selected */}
-            {selectedTool && (
-              <div className="absolute top-4 left-4 bg-card/90 backdrop-blur-sm rounded-lg p-4 shadow-creative">
-                <h4 className="font-semibold mb-2">
-                  {toolbarItems.find(t => t.id === selectedTool)?.label}
-                </h4>
-                <p className="text-sm text-muted-foreground">
-                  Tool controls and options will appear here
-                </p>
+            )}
+            {selectedTool === "template" && (
+              <div>
+                <label className="block mb-2 font-medium">Choose a background color</label>
+                <div className="flex gap-2">
+                  {["#fbbf24", "#60a5fa", "#34d399", "#f472b6", "#e11d48", "#6366f1", "#f59e42", "#10b981", "#fff", "#000"].map(c => (
+                    <button
+                      key={c}
+                      className="w-6 h-6 rounded-full border-2 border-gray-300"
+                      style={{ background: c, outline: background === c ? "2px solid #333" : undefined }}
+                      onClick={() => setBackground(c)}
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
+            {selectedTool === "image" && (
+              <div>
+                <label className="block mb-2 font-medium">Upload Image</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={e => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      const reader = new FileReader();
+                      reader.onload = ev => handleAddImage(ev.target?.result as string);
+                      reader.readAsDataURL(file);
+                    }
+                  }}
+                />
+                <div className="text-xs text-muted-foreground mt-1">Image will be added to canvas</div>
+              </div>
+            )}
+            {selectedTool === "illustration" && (
+              <div>
+                <label className="block mb-2 font-medium">Add a shape</label>
+                <div className="flex gap-2 flex-wrap">
+                  {["rect", "circle", "ellipse", "triangle", "star", "line", "arrow", "pentagon", "hexagon", "heart"].map(shape => (
+                    <button
+                      key={shape}
+                      className="px-2 py-1 border rounded text-xs"
+                      onClick={() => handleAddShape(shape)}
+                    >
+                      {shape}
+                    </button>
+                  ))}
+                </div>
+                <div className="text-xs text-muted-foreground mt-1">Shape will be added to canvas. Select and use color palette to change color.</div>
               </div>
             )}
           </div>
@@ -177,14 +290,8 @@ export default function Studio() {
               }`}
               onClick={() => handleToolSelect(tool.id)}
             >
-              {tool.type === "brand" ? (
-                <span className="text-sm font-bold">{tool.icon as string}</span>
-              ) : (
-                <>
-                  {tool.icon && typeof tool.icon !== 'string' && (
-                    <tool.icon className="h-4 w-4" />
-                  )}
-                </>
+              {tool.icon && typeof tool.icon !== 'string' && (
+                <tool.icon className="h-4 w-4" />
               )}
             </Button>
           ))}
