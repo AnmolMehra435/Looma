@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, User, ShoppingBag, Palette, Home, Layers3, Search, UserCircle, X, Moon, Sun } from "lucide-react";
+import { Menu, User, ShoppingBag, Palette, Home, Layers3, Search, Truck, Package, X, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { 
   DropdownMenu,
@@ -44,7 +44,7 @@ export const Navbar = () => {
     { label: "Home", icon: Home, path: "/" },
     { label: "3D Studio", icon: Layers3, path: "/studio" },
     { label: "Explore", icon: Search, path: "/explore" },
-    { label: "Profile", icon: UserCircle, path: "/profile" },
+    { label: "Track Orders", icon: Package, path: "/track-orders" },
   ] : [];
 
   return (
@@ -75,6 +75,10 @@ export const Navbar = () => {
                 <DropdownMenuItem onClick={() => navigate("/explore")}>
                   <Search className="mr-2 h-4 w-4" />
                   Explore Designs
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate("/track-orders")}>
+                  <Package className="mr-2 h-4 w-4" />
+                  Track Orders
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
@@ -147,12 +151,12 @@ export const Navbar = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48 bg-card/95 backdrop-blur-sm">
                   <DropdownMenuItem>
-                    <UserCircle className="mr-2 h-4 w-4" />
-                    Profile
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
                     <ShoppingBag className="mr-2 h-4 w-4" />
                     My Designs
+                  </DropdownMenuItem>
+                  <DropdownMenuItem onClick={() => navigate("/track-orders")}>
+                    <Package className="mr-2 h-4 w-4" />
+                    Track Orders
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => setIsLoggedIn(false)}>
