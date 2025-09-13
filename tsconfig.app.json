@@ -26,5 +26,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "src/types"],
+  "types": ["three", "@react-three/fiber", "@react-three/drei"]
 }

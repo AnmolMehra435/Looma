@@ -10,7 +10,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useNavigate } from "react-router-dom";
 
-export const Navbar = () => {
+interface NavbarProps {
+  className?: string;
+}
+
+export const Navbar = ({ className = '' }: NavbarProps) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -48,7 +52,7 @@ export const Navbar = () => {
   ] : [];
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 transition-smooth">
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? 'bg-white dark:bg-gray-900 shadow-md' : 'bg-transparent'} ${className}`}>
       <div className={`transition-smooth ${
         isScrolled 
           ? "bg-background/80 backdrop-blur-lg border-b shadow-creative" 
@@ -116,16 +120,6 @@ export const Navbar = () => {
 
           {/* Right Side (Extreme Right) */}
           <div className="flex items-center gap-1 xs:gap-2 sm:gap-3 justify-end flex-wrap xs:flex-nowrap min-w-0">
-            {/* Theme Switcher Button */}
-            <Button
-              variant="ghost"
-              size="icon"
-              aria-label="Toggle theme"
-              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-              className="hover-glow"
-            >
-              {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-            </Button>
             {!isLoggedIn ? (
               <>
                 <Button 
